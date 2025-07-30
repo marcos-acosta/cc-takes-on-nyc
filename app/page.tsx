@@ -1,95 +1,137 @@
-import Image from "next/image";
+"use client";
+
+import { useState, useEffect } from "react";
+import { CLUES, RETURN_TIME } from "./util";
 import styles from "./page.module.css";
 
-export default function Home() {
-  return (
-    <div className={styles.page}>
-      <main className={styles.main}>
-        <Image
-          className={styles.logo}
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol>
-          <li>
-            Get started by editing <code>app/page.tsx</code>.
-          </li>
-          <li>Save and see your changes instantly.</li>
-        </ol>
+const SECOND_IN_MILLIS = 1000;
+const MINUTE_IN_MILLIS = 60 * SECOND_IN_MILLIS;
 
-        <div className={styles.ctas}>
-          <a
-            className={styles.primary}
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className={styles.logo}
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-            className={styles.secondary}
-          >
-            Read our docs
-          </a>
+export default function Home() {
+  const [teamName, setTeamName] = useState("");
+  const [teamNumber, setTeamNumber] = useState(0);
+  const [showClues, setShowClues] = useState(false);
+  const [index, setIndex] = useState(0);
+  const [minutesUntilCodeTime, setMinutesUntilCodeTime] = useState<
+    number | null
+  >(null);
+
+  const updateTimeUntilCodeTime = () => {
+    setMinutesUntilCodeTime(
+      Math.max(
+        0,
+        (RETURN_TIME.valueOf() - new Date().valueOf()) / MINUTE_IN_MILLIS
+      )
+    );
+  };
+
+  useEffect(() => {
+    updateTimeUntilCodeTime();
+    setInterval(updateTimeUntilCodeTime, MINUTE_IN_MILLIS);
+  }, [setMinutesUntilCodeTime]);
+
+  // Load cached states from localStorage on component mount
+  useEffect(() => {
+    const cachedTeamName = localStorage.getItem("teamName");
+    const cachedTeamNumber = localStorage.getItem("teamNumber");
+    const cachedShowClues = localStorage.getItem("showClues");
+    const cachedIndex = localStorage.getItem("index");
+
+    if (cachedTeamName) setTeamName(cachedTeamName);
+    if (cachedTeamNumber) setTeamNumber(parseInt(cachedTeamNumber));
+    if (cachedShowClues) setShowClues(cachedShowClues === "true");
+    if (cachedIndex) setIndex(parseInt(cachedIndex));
+  }, []);
+
+  // Cache states to localStorage whenever they change
+  useEffect(() => {
+    localStorage.setItem("teamName", teamName);
+  }, [teamName]);
+
+  useEffect(() => {
+    localStorage.setItem("teamNumber", teamNumber.toString());
+  }, [teamNumber]);
+
+  useEffect(() => {
+    localStorage.setItem("showClues", showClues.toString());
+  }, [showClues]);
+
+  useEffect(() => {
+    localStorage.setItem("index", index.toString());
+  }, [index]);
+
+  const acceptTeamAndStart = () => {
+    if (teamName.length && teamNumber > 0) {
+      setShowClues(true);
+    }
+  };
+
+  const nextClue = () => {
+    setIndex(index + 1);
+  };
+
+  const clueIndex = (teamNumber + index) % CLUES.length;
+  const clue = CLUES[clueIndex];
+  const foundAllClues = index == CLUES.length;
+
+  const outOfTime = minutesUntilCodeTime !== null && minutesUntilCodeTime <= 0;
+
+  return (
+    <div className={styles.exampleClassForSasha}>
+      {showClues ? (
+        <div>
+          <div>good luck, {teamName}</div>
+          {foundAllClues ? (
+            <div>
+              congrats! you found all the clues. now head back to [venue] to
+              code creatively
+            </div>
+          ) : (
+            <div>
+              <div>you must now find: {clue}</div>
+              <div>
+                <button onClick={nextClue}>found</button>
+              </div>
+              {minutesUntilCodeTime !== null &&
+                (outOfTime ? (
+                  <div>GET BACK NOW!</div>
+                ) : (
+                  <div>
+                    {Math.floor(minutesUntilCodeTime)} minutes left until
+                    creative coding
+                  </div>
+                ))}
+            </div>
+          )}
         </div>
-      </main>
-      <footer className={styles.footer}>
-        <a
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
+      ) : (
+        <div>
+          <div>cc takes on nyc</div>
+          <div>
+            <label>
+              team name
+              <input
+                type="text"
+                name="team-name"
+                value={teamName}
+                onChange={(e) => setTeamName(e.target.value)}
+              />
+            </label>
+            <label>
+              team number
+              <input
+                type="number"
+                name="team-number"
+                value={teamNumber}
+                onChange={(e) => setTeamNumber(parseInt(e.target.value))}
+              />
+            </label>
+            <div>
+              <button onClick={acceptTeamAndStart}>submit</button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
