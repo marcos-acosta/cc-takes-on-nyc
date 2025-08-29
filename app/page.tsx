@@ -5,9 +5,16 @@ import JoinRoom from "./components/JoinRoom";
 import { Suspense } from "react";
 import { useSearchParams } from "next/navigation";
 
-export default function Home() {
+function HomeInner() {
   const searchParams = useSearchParams();
   const teamId = searchParams.get("team");
+  return teamId ? <div>{teamId}</div> : <JoinRoom />;
+}
 
-  return <Suspense>{teamId ? <div>{teamId}</div> : <JoinRoom />}</Suspense>;
+export default function Home() {
+  return (
+    <Suspense>
+      <HomeInner />
+    </Suspense>
+  );
 }
