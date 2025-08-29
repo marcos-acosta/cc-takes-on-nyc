@@ -1,12 +1,6 @@
 "use client";
 
-import {
-  getFirestore,
-  collection,
-  doc,
-  setDoc,
-  addDoc,
-} from "firebase/firestore";
+import { collection, doc, setDoc } from "firebase/firestore";
 import { useRouter } from "next/navigation";
 import { useCollection } from "react-firebase-hooks/firestore";
 import { db } from "./../db";
