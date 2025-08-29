@@ -1,11 +1,16 @@
-export const CLUES = [
-    "people having fun",
-    "a graffiti animal",
-    "the most boring corner in nyc",
-    "three of the same sticker",
-    "a bike that needs some tlc",
-    "a rat",
-    "a bodega cat"
-]
+import { DocumentData, QueryDocumentSnapshot } from "firebase/firestore";
+import { Team } from "./interfaces";
 
-export const RETURN_TIME = new Date("2025-09-06T16:00:00Z");
+export const convertDbTeamDocToClientTeam = (
+  doc: QueryDocumentSnapshot<DocumentData, DocumentData>
+) => {
+  const data = doc.data();
+  const teamData = {
+    ...data,
+    constraints: data["constraints"].map((placedConstraint: any) => ({
+      ...placedConstraint,
+      timestamp: placedConstraint["timestamp"].toDate(),
+    })),
+  };
+  return teamData as Team;
+};

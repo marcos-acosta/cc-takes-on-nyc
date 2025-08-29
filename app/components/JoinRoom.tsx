@@ -11,6 +11,7 @@ import Error from "./Error";
 import Loading from "./Loading";
 import { Team } from "../interfaces";
 import { v4 as uuid } from "uuid";
+import { convertDbTeamDocToClientTeam } from "../util";
 
 const getMemberNames = (namesStr: string) =>
   namesStr.split(",").map((name) => name.trim());
@@ -39,6 +40,7 @@ export default function JoinRoom() {
       teamName: teamNameCreate,
       memberNames: getMemberNames(memberNames),
       teamId: uuid(),
+      constraints: [],
     };
     setAddingTeam(true);
     setDoc(doc(db, "teams", newTeam.teamId), newTeam).then(
@@ -95,7 +97,7 @@ export default function JoinRoom() {
                 <Loading message="Loading teams..." />
               ) : (
                 teamsValue?.docs
-                  .map((doc) => doc.data() as Team)
+                  .map(convertDbTeamDocToClientTeam)
                   .map((team) => (
                     <div className={styles.teamJoinButton} key={team.teamId}>
                       <button onClick={() => goToTeamPage(team.teamId)}>

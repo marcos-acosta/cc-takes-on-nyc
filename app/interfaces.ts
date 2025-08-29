@@ -49,10 +49,17 @@ export interface Constraint {
   incompatibleWith?: ConstraintId[];
 }
 
+export interface PlacedConstraint {
+  constraintId: ConstraintId;
+  placedByTeamId: string;
+  timestamp: Date;
+}
+
 export interface Team {
   teamId: string;
   teamName: string;
   memberNames: string[];
+  constraints: PlacedConstraint[];
 }
 
 export interface ScavengerHuntItem {
