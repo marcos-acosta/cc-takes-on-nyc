@@ -8,12 +8,19 @@ interface TeamInfoProps {
   team: Team;
   allTeams: Team[];
   children?: React.ReactNode;
+  grayedOut?: boolean;
 }
 
 export default function TeamInfo(props: TeamInfoProps) {
   return (
     <div className={styles.teamInfoContainer}>
-      <div className={combineClasses(styles.teamInfoName, TANKER.className)}>
+      <div
+        className={combineClasses(
+          styles.teamInfoName,
+          TANKER.className,
+          props.grayedOut && styles.grayedOut
+        )}
+      >
         {props.team.teamName}
       </div>
       <div className={styles.teamInfoMembersContainer}>

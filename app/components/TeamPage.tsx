@@ -13,10 +13,12 @@ import Error from "./Error";
 import Loading from "./Loading";
 import PlacedConstraints from "./PlacedConstraints";
 import {
+  canApplyConstraint,
   combineClasses,
   constraintsSetByThisTeam,
   convertDbTeamDocToClientTeam,
   sortScavengerHuntItems,
+  sortTeamsByCanApply,
 } from "../util";
 import ScavengerHuntItemInfo from "./ScavengerHuntItemInfo";
 import { CONSTRAINTS, SCAVENGER_HUNT_ITEMS } from "../config";
@@ -89,15 +91,16 @@ export default function TeamPage(props: TeamPageProps) {
     });
   };
 
-  const canApplyConstraint = (team: Team, constraintId: ConstraintId) => {
-    return [true, null];
-  };
-
   const isOnItemsPage = selectedPage === Page.ITEMS;
 
   const sortedScavengerHuntItems = SCAVENGER_HUNT_ITEMS.sort((itemA, itemB) =>
     sortScavengerHuntItems(itemA, itemB, constraintsFoundByThisTeam)
   );
+
+  const otherTeams =
+    teamsData &&
+    thisTeamData &&
+    teamsData.filter((team) => team.teamId !== thisTeamData.teamId);
 
   return (
     <div className={styles.teamPageOuterContainer}>
@@ -195,9 +198,8 @@ export default function TeamPage(props: TeamPageProps) {
             </div>
           ) : (
             <div className={styles.allTeamsList}>
-              {teamsData
-                .filter((team) => team.teamId !== thisTeamData.teamId)
-                .map((team) => (
+              {otherTeams &&
+                otherTeams.map((team) => (
                   <TeamInfo
                     team={team}
                     allTeams={teamsData}
@@ -233,39 +235,42 @@ export default function TeamPage(props: TeamPageProps) {
             </div>
             <div className={styles.teamToInflictListContainer}>
               {!missingData &&
-                teamsData
-                  .filter((team) => team.teamId !== thisTeamData.teamId)
-                  .map((team) => {
-                    const [canApply, reason] = canApplyConstraint(
-                      team,
-                      props.castingConstraintId as ConstraintId
-                    );
-                    return (
-                      <TeamInfo
-                        team={team}
-                        allTeams={teamsData}
-                        key={team.teamId}
+                otherTeams &&
+                sortTeamsByCanApply(
+                  otherTeams,
+                  props.castingConstraintId as ConstraintId
+                ).map((team) => {
+                  const [canApply, reason] = canApplyConstraint(
+                    team,
+                    props.castingConstraintId as ConstraintId
+                  );
+                  return (
+                    <TeamInfo
+                      team={team}
+                      allTeams={teamsData}
+                      key={team.teamId}
+                      grayedOut={!canApply}
+                    >
+                      {!canApply && (
+                        <div className={styles.cantApplyReason}>
+                          Can&apos;t use on this team because {reason}.
+                        </div>
+                      )}
+                      <button
+                        disabled={!canApply}
+                        className={styles.button}
+                        onClick={() =>
+                          applyConstraint(
+                            team.teamId,
+                            props.castingConstraintId as ConstraintId
+                          )
+                        }
                       >
-                        {!canApply && (
-                          <div className={styles.cantApplyReason}>
-                            Can&apos;t cast this constraint because {reason}
-                          </div>
-                        )}
-                        <button
-                          disabled={!canApply}
-                          className={styles.button}
-                          onClick={() =>
-                            applyConstraint(
-                              team.teamId,
-                              props.castingConstraintId as ConstraintId
-                            )
-                          }
-                        >
-                          Cast on this team!
-                        </button>
-                      </TeamInfo>
-                    );
-                  })}
+                        Cast on this team!
+                      </button>
+                    </TeamInfo>
+                  );
+                })}
             </div>
           </div>
         </div>

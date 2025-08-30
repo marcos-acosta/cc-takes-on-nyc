@@ -82,3 +82,5 @@ export const SCAVENGER_HUNT_ITEMS: ScavengerHuntItem[] = [
     count: DEFAULT_initialcount,
   },
 ];
+
+export const MAX_NUM_CONSTRAINTS = 4;

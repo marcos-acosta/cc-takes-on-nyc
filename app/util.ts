@@ -5,6 +5,7 @@ import {
   ScavengerHuntItem,
   Team,
 } from "./interfaces";
+import { CONSTRAINTS, MAX_NUM_CONSTRAINTS } from "./config";
 
 export const combineClasses = (
   ...classes: (string | null | undefined | false)[]
@@ -70,3 +71,42 @@ export const sortScavengerHuntItems = (
   const foundItemB = foundConstraintIds.includes(itemB.constraintId);
   return +foundItemA - +foundItemB;
 };
+
+export const canApplyConstraint = (team: Team, constraintId: ConstraintId) => {
+  const teamConstraintsData = team.constraints.map(
+    (constraint) => CONSTRAINTS[constraint.constraintId]
+  );
+  if (teamConstraintsData.length >= MAX_NUM_CONSTRAINTS) {
+    return [false, "it already has the maximum number of constraints"];
+  } else if (
+    teamConstraintsData.find(
+      (teamConstraint) => teamConstraint.constraintId === constraintId
+    )
+  ) {
+    return [false, "it already has this constraint"];
+  } else if (
+    teamConstraintsData.some(
+      (constraint) =>
+        constraint.incompatibleWith &&
+        constraint.incompatibleWith.includes(constraintId)
+    )
+  ) {
+    return [false, "it has a constraint which is incompatible with this one"];
+  }
+  return [true, null];
+};
+
+const compareTeamsByCanApply = (
+  teamA: Team,
+  teamB: Team,
+  constraint: ConstraintId
+) => {
+  const canApplyToTeamA = canApplyConstraint(teamA, constraint);
+  const canApplyToTeamB = canApplyConstraint(teamB, constraint);
+  return +canApplyToTeamA - +canApplyToTeamB;
+};
+
+export const sortTeamsByCanApply = (teams: Team[], constraint: ConstraintId) =>
+  teams.sort((teamA, teamB) =>
+    compareTeamsByCanApply(teamA, teamB, constraint)
+  );

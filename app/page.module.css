@@ -87,7 +87,7 @@
     border-radius: 10px;
 }
 
-.button:active {
+.button:active :not(.button:disabled) {
     background-color: var(--foreground);
     color: var(--background)
 }
@@ -202,6 +202,7 @@
 .noConstraints {
     color: var(--theme-gray);
     font-style: italic;
+    font-size: 0.75rem;
 }
 
 .itemHeader {
@@ -225,7 +226,7 @@
 .scavengerHuntItemListContainer {
     display: flex;
     flex-direction: column;
-    gap: 40px;
+    gap: 20px;
 }
 
 .button.toggleButton {
@@ -263,11 +264,6 @@
     border-left: 3px solid var(--foreground);
 }
 
-.appOuterContainer hr {
-    margin-top: 10px;
-    margin-bottom: 10px;
-}
-
 .scavengerHuntItemContainer {
     border: 1px solid var(--foreground);
     padding: 10px;
@@ -294,7 +290,7 @@
     border: 1px solid var(--foreground);
     border-radius: 10px;
     padding: 10px;
-    margin-bottom: 50px;
+    margin-bottom: 80px;
 }
 
 .chooseTeamHeader {
@@ -354,4 +350,15 @@
     flex-direction: column;
     gap: 15px;
     margin-top: 5px;
+}
+
+.cantApplyReason {
+    font-size: 0.75rem;
+    margin-bottom: 10px;
+    font-weight: bold;
+    color: var(--theme-red);
+}
+
+.grayedOut {
+    color: var(--theme-gray)
 }
