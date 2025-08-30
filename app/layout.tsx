@@ -14,6 +14,9 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
+      <head>
+        <meta name="apple-mobile-web-app-title" content="CCvNYC" />
+      </head>
       <body className={AZARET.className}>{children}</body>
     </html>
   );
