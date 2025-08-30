@@ -52,6 +52,7 @@ export interface Constraint {
 export interface PlacedConstraint {
   constraintId: ConstraintId;
   placedByTeamId: string;
+  placedOnTeamId: string;
   timestamp: Date;
 }
 

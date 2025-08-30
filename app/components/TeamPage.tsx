@@ -6,8 +6,12 @@ import { Item, PlacedConstraint, ScavengerHuntItem, Team } from "../interfaces";
 import Error from "./Error";
 import Loading from "./Loading";
 import PlacedConstraints from "./PlacedConstraints";
-import { convertDbTeamDocToClientTeam } from "../util";
+import {
+  constraintsSetByThisTeam,
+  convertDbTeamDocToClientTeam,
+} from "../util";
 import ScavengerHuntItemInfo from "./ScavengerHuntItemInfo";
+import { SCAVENGER_HUNT_ITEMS } from "../config";
 
 interface TeamPageProps {
   teamId: string;
@@ -22,29 +26,28 @@ export default function TeamPage(props: TeamPageProps) {
   const [teamsValue, teamsLoading, teamsError] = useCollection(
     collection(db, "teams")
   );
-  const [itemsValue, itemsLoading, itemsError] = useCollection(
-    collection(db, "items")
-  );
   const teamsData: Team[] | undefined =
     teamsValue && teamsValue.docs.map(convertDbTeamDocToClientTeam);
-  const itemsData: ScavengerHuntItem[] | undefined =
-    itemsValue && itemsValue.docs.map((doc) => doc.data() as ScavengerHuntItem);
 
   const thisTeamData =
     teamsData && teamsData.findLast((team) => team.teamId === props.teamId);
 
-  const anyError = itemsError || teamsError;
-  const anyLoading = itemsLoading || teamsLoading;
-  const missingData = !teamsData || !itemsData || !thisTeamData;
+  const constraintsFoundByThisTeam =
+    teamsData &&
+    thisTeamData &&
+    constraintsSetByThisTeam(teamsData, thisTeamData.teamId);
+
+  const missingData =
+    !teamsData || !thisTeamData || !constraintsFoundByThisTeam;
 
   return (
     <div className={styles.teamPageOuterContainer}>
       <div className={styles.teamPageHeader}>
         Creative Coding Scavenger Hunt
       </div>
-      {anyError ? (
+      {teamsError ? (
         <Error message="Couldn't load data :/" />
-      ) : anyLoading ? (
+      ) : teamsLoading ? (
         <Loading message="Loading..." />
       ) : missingData ? (
         <Error message="Something weird happened" />
@@ -71,10 +74,12 @@ export default function TeamPage(props: TeamPageProps) {
             )}
           </div>
           <div className={styles.itemsContainer}>
-            {itemsData.map((item) => (
+            {SCAVENGER_HUNT_ITEMS.map((item) => (
               <ScavengerHuntItemInfo
                 item={item}
                 key={item.itemId}
+                teamsData={teamsData}
+                foundConstraints={constraintsFoundByThisTeam}
                 find={() => {}}
               />
             ))}

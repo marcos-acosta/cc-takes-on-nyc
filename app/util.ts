@@ -1,5 +1,5 @@
 import { DocumentData, QueryDocumentSnapshot } from "firebase/firestore";
-import { Team } from "./interfaces";
+import { ConstraintId, ItemId, Team } from "./interfaces";
 
 export const convertDbTeamDocToClientTeam = (
   doc: QueryDocumentSnapshot<DocumentData, DocumentData>
@@ -14,3 +14,27 @@ export const convertDbTeamDocToClientTeam = (
   };
   return teamData as Team;
 };
+
+export const countTeamsWithConstraintId = (
+  teamsData: Team[],
+  constrantId: ConstraintId
+) =>
+  teamsData
+    .map(
+      (team) =>
+        (team.constraints.find(
+          (placedConstraint) => placedConstraint.constraintId === constrantId
+        )
+          ? 1
+          : 0) as number
+    )
+    .reduce((acc, cur) => acc + cur, 0);
+
+export const constraintsSetByThisTeam = (teamsData: Team[], teamId: string) =>
+  teamsData
+    .map((team) =>
+      team.constraints.filter(
+        (constraint) => constraint.placedByTeamId === teamId
+      )
+    )
+    .reduce((acc, curr) => [...acc, ...curr], []);
