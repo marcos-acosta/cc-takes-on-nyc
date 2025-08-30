@@ -1,5 +1,9 @@
 import { DocumentData, QueryDocumentSnapshot } from "firebase/firestore";
-import { ConstraintId, ItemId, Team } from "./interfaces";
+import { ConstraintId, Team } from "./interfaces";
+
+export const combineClasses = (
+  ...classes: (string | null | undefined | false)[]
+) => classes.filter(Boolean).join(" ");
 
 export const convertDbTeamDocToClientTeam = (
   doc: QueryDocumentSnapshot<DocumentData, DocumentData>

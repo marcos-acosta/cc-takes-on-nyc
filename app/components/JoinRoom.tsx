@@ -11,7 +11,8 @@ import Error from "./Error";
 import Loading from "./Loading";
 import { Team } from "../interfaces";
 import { v4 as uuid } from "uuid";
-import { convertDbTeamDocToClientTeam } from "../util";
+import { combineClasses, convertDbTeamDocToClientTeam } from "../util";
+import { TANKER } from "../fonts";
 
 const getMemberNames = (namesStr: string) =>
   namesStr.split(",").map((name) => name.trim());
@@ -54,59 +55,69 @@ export default function JoinRoom() {
 
   return (
     !addingTeam && (
-      <div>
-        <div className={styles.pageOuterContainer}>
-          <div className={styles.titleOuterContainer}>
-            <div className={styles.titleInnerContainer}>
-              CREATIVE CODING SCAVENGER HUNT
-            </div>
+      <div className={styles.joinRoomOuterContainer}>
+        <div className={styles.titleOuterContainer}>
+          <div
+            className={combineClasses(
+              styles.titleInnerContainer,
+              TANKER.className
+            )}
+          >
+            CREATIVE CODING
+            <br />
+            SCAVENGER HUNT
           </div>
         </div>
         {addingTeamFailed && <Error message={"Failed to add team :/"} />}
-        <div className={styles.teamInputContainer}>
-          <div className={styles.sectionContainer}>
-            <div className={styles.formHeader}>Create a team</div>
-            <div className={styles.formContainer}>
-              <div className={styles.inputLabel}>Team name</div>
+        <div className={styles.sectionContainer}>
+          <div className={combineClasses(styles.formHeader, TANKER.className)}>
+            Create a team
+          </div>
+          <div className={styles.formContainer}>
+            <div>
+              <div className={styles.inputLabel}>team name</div>
               <input
                 value={teamNameCreate}
                 onChange={(e) => setTeamNameCreate(e.target.value)}
               />
+            </div>
+            <div>
               <div className={styles.inputLabel}>
-                Team member names &#40;comma-separated&#41;:
+                team member names &#40;comma-separated&#41;
               </div>
               <input
                 value={memberNames}
                 onChange={(e) => setMemberNames(e.target.value)}
               />
-              <button
-                className={styles.button}
-                disabled={!canAddTeam}
-                onClick={addTeamThenGoToTeamPage}
-              >
-                Create team
-              </button>
             </div>
+            <button
+              className={styles.button}
+              disabled={!canAddTeam}
+              onClick={addTeamThenGoToTeamPage}
+            >
+              create team ↩
+            </button>
           </div>
-          <div className={styles.sectionContainer}>
-            <div className={styles.formHeader}>See team page</div>
-            <div className={styles.formContainer}>
-              {teamsError ? (
-                <Error message="Couldn't fetch the teams :/" />
-              ) : teamsLoading ? (
-                <Loading message="Loading teams..." />
-              ) : (
-                teamsValue?.docs
-                  .map(convertDbTeamDocToClientTeam)
-                  .map((team) => (
-                    <div className={styles.teamJoinButton} key={team.teamId}>
-                      <button onClick={() => goToTeamPage(team.teamId)}>
-                        {team.teamName}
-                      </button>
-                    </div>
-                  ))
-              )}
-            </div>
+        </div>
+        <div className={styles.sectionContainer}>
+          <div className={combineClasses(styles.formHeader, TANKER.className)}>
+            Go to team room
+          </div>
+          <div className={styles.formContainer}>
+            {teamsError ? (
+              <Error message="Couldn't fetch the teams :/" />
+            ) : teamsLoading ? (
+              <Loading message="Loading teams..." />
+            ) : (
+              teamsValue?.docs.map(convertDbTeamDocToClientTeam).map((team) => (
+                <button
+                  onClick={() => goToTeamPage(team.teamId)}
+                  key={team.teamId}
+                >
+                  {team.teamName} ↩
+                </button>
+              ))
+            )}
           </div>
         </div>
       </div>

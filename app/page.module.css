@@ -1,3 +1,77 @@
-.exampleClassForSasha {
-  background-color: chartreuse;
+.appOuterContainer {
+    width: 100vw;
+    display: flex;
+    justify-content: center;
+}
+
+.appInnerContainer {
+    width: 92%;
+}
+
+.titleOuterContainer {
+    padding-top: 40px;
+    font-size: 1.75rem;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
+
+.titleInnerContainer {
+    text-align: center;
+}
+
+.joinRoomOuterContainer {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.sectionContainer {
+    border: 1px solid var(--foreground);
+    border-top: 5px solid var(--foreground);
+    padding: 5px 10px 10px 10px;
+}
+
+.formHeader {
+    font-size: 1.25rem;
+    margin-bottom: 8px;
+}
+
+.formContainer {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.inputLabel {
+    color: var(--theme-gray);
+    font-size: 0.9rem;
+    font-style: italic;
+    margin-bottom: 5px;
+}
+
+.appOuterContainer input {
+    background-color: transparent;
+    border: none;
+    border-bottom: 1px dashed var(--foreground);
+    width: 100%;
+    outline: none;
+    color: inherit;
+    font-size: inherit;
+}
+
+.appOuterContainer input:focus {
+    border-bottom: 1px solid var(--foreground);
+}
+
+.appOuterContainer button {
+    font-size: inherit;
+    background-color: rgb(255, 244, 120);
+    border-radius: 0;
+    border: none;
+    padding: 5px 10px;
+    font-weight: bold;
+    cursor: pointer;
+    text-transform: uppercase;
+    color: var(--background)
 }
