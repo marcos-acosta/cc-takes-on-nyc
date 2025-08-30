@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import "./globals.css";
-import { KARLA } from "./fonts";
+import { AZARET, KARLA } from "./fonts";
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -14,7 +14,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={KARLA.className}>{children}</body>
+      <body className={AZARET.className}>{children}</body>
     </html>
   );
 }

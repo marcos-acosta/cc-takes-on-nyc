@@ -1,4 +1,3 @@
-import { useState } from "react";
 import { CONSTRAINTS, ITEMS, SCAVENGER_HUNT_ITEMS } from "../config";
 import {
   ConstraintId,

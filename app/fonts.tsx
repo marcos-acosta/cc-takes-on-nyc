@@ -22,3 +22,16 @@ export const KARLA = localFont({
     },
   ],
 });
+
+export const AZARET = localFont({
+  src: [
+    {
+      path: "./fonts/AzeretMono-VariableFont_wght.ttf",
+      style: "normal",
+    },
+    {
+      path: "./fonts/AzeretMono-Italic-VariableFont_wght.ttf",
+      style: "italic",
+    },
+  ],
+});

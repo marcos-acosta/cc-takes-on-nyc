@@ -10,7 +10,7 @@
 
 .titleOuterContainer {
     padding-top: 40px;
-    font-size: 1.75rem;
+    font-size: 2rem;
     width: 100%;
     display: flex;
     justify-content: center;
@@ -27,13 +27,13 @@
 }
 
 .sectionContainer {
-    border: 1px solid var(--foreground);
+    border: 1px dashed var(--foreground);
     border-top: 5px solid var(--foreground);
     padding: 5px 10px 10px 10px;
 }
 
 .formHeader {
-    font-size: 1.25rem;
+    font-size: 1.5rem;
     margin-bottom: 8px;
 }
 
@@ -58,20 +58,57 @@
     outline: none;
     color: inherit;
     font-size: inherit;
+    font-family: inherit;
 }
 
 .appOuterContainer input:focus {
     border-bottom: 1px solid var(--foreground);
 }
 
-.appOuterContainer button {
+.button {
     font-size: inherit;
-    background-color: rgb(255, 244, 120);
     border-radius: 0;
     border: none;
-    padding: 5px 10px;
-    font-weight: bold;
+    padding: 5px 15px;
     cursor: pointer;
-    text-transform: uppercase;
-    color: var(--background)
+    color: var(--foreground);
+    background-color: transparent;
+    border: 3px solid var(--foreground);
+    text-transform: lowercase;
+    font-family: inherit;
+}
+
+.teamPageHeader {
+    padding-top: 20px;
+    font-size: 1.25rem;
+    width: 100%;
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.choosePageContainer {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    margin-bottom: 20px;
+}
+
+.teamName {
+    padding-top: 40px;
+    font-size: 2rem;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
+
+.memberNames {
+    color: var(--theme-gray);
+    width: 100%;
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.button.selected {
+    background-color: var(--foreground);
+    color: var(--background);
 }

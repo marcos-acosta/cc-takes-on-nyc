@@ -8,11 +8,12 @@ import {
   updateDoc,
 } from "firebase/firestore";
 import { db } from "./../db";
-import { ConstraintId, Item, PlacedConstraint, Team } from "../interfaces";
+import { ConstraintId, PlacedConstraint, Team } from "../interfaces";
 import Error from "./Error";
 import Loading from "./Loading";
 import PlacedConstraints from "./PlacedConstraints";
 import {
+  combineClasses,
   constraintsSetByThisTeam,
   convertDbTeamDocToClientTeam,
 } from "../util";
@@ -20,6 +21,7 @@ import ScavengerHuntItemInfo from "./ScavengerHuntItemInfo";
 import { SCAVENGER_HUNT_ITEMS } from "../config";
 import { useState } from "react";
 import TeamInfo from "./TeamInfo";
+import { TANKER } from "../fonts";
 
 interface TeamPageProps {
   teamId: string;
@@ -87,65 +89,92 @@ export default function TeamPage(props: TeamPageProps) {
     return [true, null];
   };
 
+  const isOnItemsPage = selectedPage === Page.ITEMS;
+
   return (
     <div className={styles.teamPageOuterContainer}>
-      <div className={styles.teamPageHeader}>
-        Creative Coding Scavenger Hunt
-      </div>
-      <button onClick={() => setSelectedPage(Page.ITEMS)}>See items</button>
-      <button onClick={() => setSelectedPage(Page.TEAMS)}>See teams</button>
       {teamsError ? (
         <Error message="Couldn't load data :/" />
       ) : teamsLoading ? (
         <Loading message="Loading..." />
       ) : missingData ? (
         <Error message="Something weird happened" />
-      ) : selectedPage === Page.ITEMS ? (
-        <>
-          <div className={styles.teamName}>{thisTeamData.teamName}</div>
-          <div className={styles.memberNames}>
-            With {thisTeamData.memberNames.join(", ")}
-          </div>
-          <div className={styles.constraintsContainer}>
-            <div className={styles.constraintsHeader}>Your constraints</div>
-            {thisTeamData.constraints.length ? (
-              thisTeamData.constraints.map((placedConstraint) => (
-                <PlacedConstraints
-                  constraint={placedConstraint}
-                  teams={teamsData}
-                  key={keyFromPlacedConstraint(placedConstraint)}
-                />
-              ))
-            ) : (
-              <div className={styles.noConstraints}>
-                Your team has no constraints! &#40;yet...&#41;
-              </div>
-            )}
-          </div>
-          <div className={styles.itemsContainer}>
-            {SCAVENGER_HUNT_ITEMS.map((item) => (
-              <ScavengerHuntItemInfo
-                item={item}
-                key={item.itemId}
-                teamsData={teamsData}
-                foundConstraints={constraintsFoundByThisTeam}
-                find={(constraintId) => {
-                  setCastingConstraintId(constraintId);
-                }}
-                castingConstraintId={castingConstraintId}
-                thisTeamId={thisTeamData.teamId}
-                castConstraint={applyConstraint}
-              />
-            ))}
-          </div>
-        </>
       ) : (
         <>
-          {teamsData
-            .filter((team) => team.teamId !== thisTeamData.teamId)
-            .map((team) => (
-              <TeamInfo team={team} allTeams={teamsData} key={team.teamId} />
-            ))}
+          <div className={combineClasses(styles.teamName, TANKER.className)}>
+            {thisTeamData.teamName}
+          </div>
+          <div className={styles.memberNames}>
+            {thisTeamData.memberNames.join(" & ")}
+          </div>
+          <div className={styles.choosePageContainer}>
+            <button
+              onClick={() => setSelectedPage(Page.ITEMS)}
+              className={combineClasses(
+                styles.button,
+                isOnItemsPage && styles.selected
+              )}
+            >
+              us
+            </button>
+            <button
+              onClick={() => setSelectedPage(Page.TEAMS)}
+              className={combineClasses(
+                styles.button,
+                !isOnItemsPage && styles.selected
+              )}
+            >
+              them
+            </button>
+          </div>
+          {selectedPage === Page.ITEMS ? (
+            <>
+              <div className={styles.constraintsContainer}>
+                <div className={styles.constraintsHeader}>Your constraints</div>
+                {thisTeamData.constraints.length ? (
+                  thisTeamData.constraints.map((placedConstraint) => (
+                    <PlacedConstraints
+                      constraint={placedConstraint}
+                      teams={teamsData}
+                      key={keyFromPlacedConstraint(placedConstraint)}
+                    />
+                  ))
+                ) : (
+                  <div className={styles.noConstraints}>
+                    Your team has no constraints! &#40;yet...&#41;
+                  </div>
+                )}
+              </div>
+              <div className={styles.itemsContainer}>
+                {SCAVENGER_HUNT_ITEMS.map((item) => (
+                  <ScavengerHuntItemInfo
+                    item={item}
+                    key={item.itemId}
+                    teamsData={teamsData}
+                    foundConstraints={constraintsFoundByThisTeam}
+                    find={(constraintId) => {
+                      setCastingConstraintId(constraintId);
+                    }}
+                    castingConstraintId={castingConstraintId}
+                    thisTeamId={thisTeamData.teamId}
+                    castConstraint={applyConstraint}
+                  />
+                ))}
+              </div>
+            </>
+          ) : (
+            <>
+              {teamsData
+                .filter((team) => team.teamId !== thisTeamData.teamId)
+                .map((team) => (
+                  <TeamInfo
+                    team={team}
+                    allTeams={teamsData}
+                    key={team.teamId}
+                  />
+                ))}
+            </>
+          )}
         </>
       )}
       {castingConstraintId && (

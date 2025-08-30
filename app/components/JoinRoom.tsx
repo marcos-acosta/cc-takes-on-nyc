@@ -12,10 +12,10 @@ import Loading from "./Loading";
 import { Team } from "../interfaces";
 import { v4 as uuid } from "uuid";
 import { combineClasses, convertDbTeamDocToClientTeam } from "../util";
-import { TANKER } from "../fonts";
+import { AZARET, TANKER } from "../fonts";
 
 const getMemberNames = (namesStr: string) =>
-  namesStr.split(",").map((name) => name.trim());
+  namesStr.split(",").map((name) => name.trim().toLocaleLowerCase());
 
 export default function JoinRoom() {
   const router = useRouter();
@@ -38,7 +38,7 @@ export default function JoinRoom() {
       return;
     }
     const newTeam: Team = {
-      teamName: teamNameCreate,
+      teamName: teamNameCreate.toLocaleLowerCase(),
       memberNames: getMemberNames(memberNames),
       teamId: uuid(),
       constraints: [],
@@ -79,6 +79,7 @@ export default function JoinRoom() {
               <input
                 value={teamNameCreate}
                 onChange={(e) => setTeamNameCreate(e.target.value)}
+                maxLength={20}
               />
             </div>
             <div>
@@ -91,11 +92,11 @@ export default function JoinRoom() {
               />
             </div>
             <button
-              className={styles.button}
+              className={combineClasses(styles.button, AZARET.className)}
               disabled={!canAddTeam}
               onClick={addTeamThenGoToTeamPage}
             >
-              create team ↩
+              create team
             </button>
           </div>
         </div>
@@ -112,9 +113,10 @@ export default function JoinRoom() {
               teamsValue?.docs.map(convertDbTeamDocToClientTeam).map((team) => (
                 <button
                   onClick={() => goToTeamPage(team.teamId)}
+                  className={combineClasses(styles.button, AZARET.className)}
                   key={team.teamId}
                 >
-                  {team.teamName} ↩
+                  {team.teamName}
                 </button>
               ))
             )}
