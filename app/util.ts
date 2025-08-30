@@ -77,13 +77,13 @@ export const canApplyConstraint = (team: Team, constraintId: ConstraintId) => {
     (constraint) => CONSTRAINTS[constraint.constraintId]
   );
   if (teamConstraintsData.length >= MAX_NUM_CONSTRAINTS) {
-    return [false, "it already has the maximum number of constraints"];
+    return [false, "they already have the maximum number of constraints"];
   } else if (
     teamConstraintsData.find(
       (teamConstraint) => teamConstraint.constraintId === constraintId
     )
   ) {
-    return [false, "it already has this constraint"];
+    return [false, "they already have this constraint"];
   } else if (
     teamConstraintsData.some(
       (constraint) =>
@@ -91,7 +91,10 @@ export const canApplyConstraint = (team: Team, constraintId: ConstraintId) => {
         constraint.incompatibleWith.includes(constraintId)
     )
   ) {
-    return [false, "it has a constraint which is incompatible with this one"];
+    return [
+      false,
+      "they already have a constraint which is incompatible with this one",
+    ];
   }
   return [true, null];
 };

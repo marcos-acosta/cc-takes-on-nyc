@@ -364,13 +364,28 @@
 }
 
 .itemText {
-    text-decoration: var(--theme-blue) 2px underline;
+    text-decoration-color: var(--theme-blue);
+    text-decoration-thickness: 2px;
+    text-decoration-line: underline;
+    -webkit-text-decoration-color: var(--theme-blue);
+    -webkit-text-decoration-thickness: 2px;
+    -webkit-text-decoration-line: underline;
 }
 
 .constraintText {
-    text-decoration: var(--theme-red) 2px underline;
+    text-decoration-color: var(--theme-red);
+    text-decoration-thickness: 2px;
+    text-decoration-line: underline;
+    -webkit-text-decoration-color: var(--theme-red);
+    -webkit-text-decoration-thickness: 2px;
+    -webkit-text-decoration-line: underline;
 }
 
 .extraText {
-    text-decoration: var(--theme-green) 2px underline;
+    text-decoration-color: var(--theme-green);
+    text-decoration-thickness: 2px;
+    text-decoration-line: underline;
+    -webkit-text-decoration-color: var(--theme-green);
+    -webkit-text-decoration-thickness: 2px;
+    -webkit-text-decoration-line: underline;
 }

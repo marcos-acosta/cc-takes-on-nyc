@@ -67,10 +67,7 @@ export default function TeamPage(props: TeamPageProps) {
     props.castingConstraintId &&
     CONSTRAINTS[props.castingConstraintId as ConstraintId];
 
-  const applyConstraint = async (
-    onTeamId: string,
-    constraintId: ConstraintId
-  ) => {
+  const applyConstraint = (onTeamId: string, constraintId: ConstraintId) => {
     if (missingData) {
       return;
     }
@@ -85,10 +82,9 @@ export default function TeamPage(props: TeamPageProps) {
       timestamp: Timestamp.fromDate(placedConstraint.timestamp),
     };
     const docRef = doc(db, "teams", onTeamId);
-    await updateDoc(docRef, {
+    props.setCastingConstraintId(null);
+    updateDoc(docRef, {
       constraints: arrayUnion(placedConstraintForDb),
-    }).then(() => {
-      props.setCastingConstraintId(null);
     });
   };
 
