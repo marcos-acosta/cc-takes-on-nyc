@@ -36,7 +36,7 @@ export const ITEMS: { [key in ItemId]: Item } = {
 export const CONSTRAINTS: { [key in ConstraintId]: Constraint } = {
   [ConstraintId.NO_JAVASCRIPT]: {
     constraintId: ConstraintId.NO_JAVASCRIPT,
-    title: "This browser does not support Javascript",
+    title: "nope.js",
     description:
       "Your creative sketch cannot involve Javascript (including P5).",
   },

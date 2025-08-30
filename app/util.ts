@@ -42,3 +42,10 @@ export const constraintsSetByThisTeam = (teamsData: Team[], teamId: string) =>
       )
     )
     .reduce((acc, curr) => [...acc, ...curr], []);
+
+export const formatTime = (time: Date) =>
+  time.toLocaleTimeString("en-US", {
+    hour: "numeric",
+    minute: "2-digit",
+    hour12: true,
+  });

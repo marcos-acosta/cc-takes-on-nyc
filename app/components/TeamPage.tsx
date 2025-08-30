@@ -98,7 +98,9 @@ export default function TeamPage(props: TeamPageProps) {
       ) : teamsLoading ? (
         <Loading message="Loading..." />
       ) : missingData ? (
-        <Error message="Something weird happened" />
+        <div className={styles.messageContainer}>
+          <Error message="Something went wrong" />
+        </div>
       ) : (
         <>
           <div className={combineClasses(styles.teamName, TANKER.className)}>
@@ -129,21 +131,30 @@ export default function TeamPage(props: TeamPageProps) {
           </div>
           {selectedPage === Page.ITEMS ? (
             <>
-              <div className={styles.constraintsContainer}>
-                <div className={styles.constraintsHeader}>Your constraints</div>
-                {thisTeamData.constraints.length ? (
-                  thisTeamData.constraints.map((placedConstraint) => (
-                    <PlacedConstraints
-                      constraint={placedConstraint}
-                      teams={teamsData}
-                      key={keyFromPlacedConstraint(placedConstraint)}
-                    />
-                  ))
-                ) : (
-                  <div className={styles.noConstraints}>
-                    Your team has no constraints! &#40;yet...&#41;
-                  </div>
-                )}
+              <div className={styles.ourConstraintsContainer}>
+                <div
+                  className={combineClasses(
+                    styles.constraintsHeader,
+                    TANKER.className
+                  )}
+                >
+                  Your constraints
+                </div>
+                <div className={styles.constraintListContainer}>
+                  {thisTeamData.constraints.length ? (
+                    thisTeamData.constraints.map((placedConstraint) => (
+                      <PlacedConstraints
+                        constraint={placedConstraint}
+                        teams={teamsData}
+                        key={keyFromPlacedConstraint(placedConstraint)}
+                      />
+                    ))
+                  ) : (
+                    <div className={styles.noConstraints}>
+                      Your team has no constraints! &#40;yet...&#41;
+                    </div>
+                  )}
+                </div>
               </div>
               <div className={styles.itemsContainer}>
                 {SCAVENGER_HUNT_ITEMS.map((item) => (

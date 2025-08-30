@@ -5,5 +5,9 @@ interface LoadingProps {
 }
 
 export default function Loading(props: LoadingProps) {
-  return <div className={styles.loadingMessage}>{props.message}</div>;
+  return (
+    <div className={styles.loadingMessage}>
+      {props.message.toLocaleLowerCase()}
+    </div>
+  );
 }

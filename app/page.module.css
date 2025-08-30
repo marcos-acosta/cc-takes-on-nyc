@@ -2,6 +2,7 @@
     width: 100vw;
     display: flex;
     justify-content: center;
+    padding-bottom: 50px;
 }
 
 .appInnerContainer {
@@ -78,6 +79,11 @@
     font-family: inherit;
 }
 
+.button:active {
+    background-color: var(--foreground);
+    color: var(--background)
+}
+
 .teamPageHeader {
     padding-top: 20px;
     font-size: 1.25rem;
@@ -111,4 +117,58 @@
 .button.selected {
     background-color: var(--foreground);
     color: var(--background);
+}
+
+.errorMessage {
+    color: var(--theme-red);
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+}
+
+.loadingMessage {
+    color: var(--theme-gray);
+    font-style: italic;
+}
+
+.messageContainer {
+    margin-top: 50px;
+}
+
+.ourConstraintsContainer {
+    border: 1px dashed var(--foreground);
+    border-top: 3px solid var(--foreground);
+    padding: 5px 10px 15px 10px;
+}
+
+.constraintsHeader {
+    font-size: 1.25rem;
+    margin-bottom: 10px;
+}
+
+.placedConstraintContainer {
+    font-size: 0.75rem;
+}
+
+.constraintDescription {
+    font-size: 1.2em;
+}
+
+.constraintListContainer {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.constraintTitle {
+    font-weight: bold;
+    font-size: 1.25em;
+    text-transform: lowercase;
+}
+
+.placedByContainer {
+    text-transform: lowercase;
+    font-style: italic;
+    color: var(--theme-gray);
+    padding-left: 20px;
 }

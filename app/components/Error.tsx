@@ -5,5 +5,10 @@ interface ErrorProps {
 }
 
 export default function Error(props: ErrorProps) {
-  return <div className={styles.errorMessage}>{props.message}</div>;
+  return (
+    <div className={styles.errorMessage}>
+      <p>YIKES</p>
+      <p>{props.message.toLocaleLowerCase()}</p>
+    </div>
+  );
 }
