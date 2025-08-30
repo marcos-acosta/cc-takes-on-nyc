@@ -42,6 +42,7 @@ export default function JoinRoom() {
       memberNames: getMemberNames(memberNames),
       teamId: uuid(),
       constraints: [],
+      extras: [],
     };
     setAddingTeam(true);
     setDoc(doc(db, "teams", newTeam.teamId), newTeam).then(

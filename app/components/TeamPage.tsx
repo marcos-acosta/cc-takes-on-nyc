@@ -25,6 +25,7 @@ import { CONSTRAINTS, SCAVENGER_HUNT_ITEMS } from "../config";
 import { useState } from "react";
 import TeamInfo from "./TeamInfo";
 import { TANKER } from "../fonts";
+import ConstraintInfo from "./ConstraintInfo";
 
 interface TeamPageProps {
   teamId: string;
@@ -88,6 +89,16 @@ export default function TeamPage(props: TeamPageProps) {
       constraints: arrayUnion(placedConstraintForDb),
     }).then(() => {
       props.setCastingConstraintId(null);
+    });
+  };
+
+  const findExtra = async (constraintId: ConstraintId) => {
+    if (missingData) {
+      return;
+    }
+    const docRef = doc(db, "teams", thisTeamData.teamId);
+    await updateDoc(docRef, {
+      extras: arrayUnion(constraintId),
     });
   };
 
@@ -169,6 +180,30 @@ export default function TeamPage(props: TeamPageProps) {
                   )}
                 </div>
               </div>
+              <div className={styles.ourConstraintsContainer}>
+                <div
+                  className={combineClasses(
+                    styles.constraintsHeader,
+                    TANKER.className
+                  )}
+                >
+                  Your extras
+                </div>
+                <div className={styles.constraintListContainer}>
+                  {thisTeamData.extras.length ? (
+                    thisTeamData.extras.map((constraintId) => (
+                      <ConstraintInfo
+                        constraint={CONSTRAINTS[constraintId]}
+                        key={constraintId}
+                      />
+                    ))
+                  ) : (
+                    <div className={styles.noConstraints}>
+                      You haven&apos;t found any extras.
+                    </div>
+                  )}
+                </div>
+              </div>
               <div className={styles.itemsContainer}>
                 <div
                   className={combineClasses(
@@ -189,8 +224,9 @@ export default function TeamPage(props: TeamPageProps) {
                         props.setCastingConstraintId(constraintId);
                       }}
                       castingConstraintId={props.castingConstraintId}
-                      thisTeamId={thisTeamData.teamId}
+                      thisTeam={thisTeamData}
                       castConstraint={applyConstraint}
+                      findExtra={findExtra}
                     />
                   ))}
                 </div>

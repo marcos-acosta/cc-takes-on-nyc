@@ -13,10 +13,11 @@ import ItemInfo from "./ItemInfo";
 interface ScavengerHuntItemInfoProps {
   item: ScavengerHuntItem;
   find: (constraintId: string | null) => void;
+  findExtra: (constraintId: ConstraintId) => void;
   teamsData: Team[];
   foundConstraints: PlacedConstraint[];
   castingConstraintId: string | null;
-  thisTeamId: string;
+  thisTeam: Team;
   castConstraint: (onTeamId: string, constraintId: ConstraintId) => void;
 }
 
@@ -35,25 +36,42 @@ export default function ScavengerHuntItemInfo(
 
   const haveAllData = fullItemData && itemData && constraintData;
 
-  const alreadyFound = Boolean(
-    props.foundConstraints.find(
-      (constraint) => constraint.constraintId === constraintData?.constraintId
-    )
-  );
+  const alreadyFound =
+    Boolean(
+      props.foundConstraints.find(
+        (constraint) => constraint.constraintId === constraintData?.constraintId
+      )
+    ) ||
+    (constraintData &&
+      props.thisTeam.extras.includes(constraintData.constraintId));
 
   const isCasting =
     haveAllData && props.castingConstraintId === constraintData.constraintId;
+
+  const findItem = () => {
+    if (!haveAllData) {
+      return;
+    }
+    if (CONSTRAINTS[constraintData.constraintId].isVeto) {
+      props.findExtra(constraintData.constraintId);
+    } else {
+      props.find(constraintData.constraintId);
+    }
+  };
 
   return (
     haveAllData && (
       <div className={styles.scavengerHuntItemContainer}>
         <div className={styles.itemHeader}>
           <div className={styles.numLeft}>
-            {props.item.count - numberOfTeamsWithThisConstraint} left
+            {props.item.count
+              ? props.item.count - numberOfTeamsWithThisConstraint
+              : "∞"}{" "}
+            left
           </div>
           <button
             className={styles.button}
-            onClick={() => props.find(constraintData.constraintId)}
+            onClick={findItem}
             disabled={alreadyFound || isCasting}
           >
             {alreadyFound
