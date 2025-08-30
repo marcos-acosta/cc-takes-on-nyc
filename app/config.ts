@@ -11,7 +11,7 @@ const DEFAULT_initialcount = 3;
 export const ITEMS: { [key in ItemId]: Item } = {
   [ItemId.LIVING_RAT]: {
     itemId: ItemId.LIVING_RAT,
-    title: "A living rat",
+    title: "A rat",
     description: "Find a living, breathing rat.",
   },
   [ItemId.SCAVENGED_BIKE]: {
@@ -22,13 +22,13 @@ export const ITEMS: { [key in ItemId]: Item } = {
   },
   [ItemId.BIG_CHEF]: {
     itemId: ItemId.BIG_CHEF,
-    title: 'A "BIG CHEF DOG STAY COOKIN" sticker',
+    title: "BIG CHEF DOG STAY COOKIN",
     description:
       "Find one of these iconic black-and-white (or blue-and-black) stickers.",
   },
   [ItemId.CITIBIKE]: {
     itemId: ItemId.CITIBIKE,
-    title: "An ebike-less CitiBike dock",
+    title: "A raided Citibike dock",
     description: "Find a CitiBike docking station with no ebikes.",
   },
 };

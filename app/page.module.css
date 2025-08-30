@@ -29,8 +29,9 @@
 
 .sectionContainer {
     border: 1px dashed var(--foreground);
-    border-top: 5px solid var(--foreground);
+    border-top: 3px solid var(--foreground);
     padding: 5px 10px 10px 10px;
+    border-radius: 10px;
 }
 
 .formHeader {
@@ -77,6 +78,7 @@
     border: 3px solid var(--foreground);
     text-transform: lowercase;
     font-family: inherit;
+    border-radius: 10px;
 }
 
 .button:active {
@@ -119,6 +121,12 @@
     color: var(--background);
 }
 
+.button:disabled {
+    color: var(--theme-gray);
+    border: 3px solid var(--theme-gray);
+    cursor: initial;
+}
+
 .errorMessage {
     color: var(--theme-red);
     display: flex;
@@ -139,19 +147,16 @@
     border: 1px dashed var(--foreground);
     border-top: 3px solid var(--foreground);
     padding: 5px 10px 15px 10px;
+    border-radius: 10px;
 }
 
 .constraintsHeader {
-    font-size: 1.25rem;
+    font-size: 1.5rem;
     margin-bottom: 10px;
 }
 
-.placedConstraintContainer {
-    font-size: 0.75rem;
-}
-
 .constraintDescription {
-    font-size: 1.2em;
+    font-size: 1rem;
 }
 
 .constraintListContainer {
@@ -162,13 +167,102 @@
 
 .constraintTitle {
     font-weight: bold;
-    font-size: 1.25em;
+    font-size: 1.1rem;
     text-transform: lowercase;
 }
 
 .placedByContainer {
+    margin-top: 4px;
     text-transform: lowercase;
     font-style: italic;
     color: var(--theme-gray);
-    padding-left: 20px;
+    font-size: 0.75rem;
+}
+
+.itemsContainer {
+    border: 1px dashed var(--foreground);
+    border-top: 3px solid var(--foreground);
+    padding: 5px 10px 10px 10px;
+    border-radius: 10px;
+}
+
+.usPageContainer {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.noConstraints {
+    color: var(--theme-gray);
+    font-style: italic;
+}
+
+.itemHeader {
+    display: flex;
+    flex-direction: row;
+    align-items: flex-end;
+    font-size: 0.75rem;
+}
+
+.itemTitle.foundItem {
+    color: var(--theme-gray);
+    text-decoration: line-through;
+}
+
+.numLeft {
+    flex-grow: 1;
+    font-style: italic;
+    color: var(--theme-gray);
+}
+
+.scavengerHuntItemListContainer {
+    display: flex;
+    flex-direction: column;
+    gap: 40px;
+}
+
+.button.toggleButton {
+    border-radius: 0;
+    border-right: 0;
+}
+
+.button.toggleButton:first-child {
+    border-top-left-radius: 10px;
+    border-bottom-left-radius: 10px;
+}
+
+.button.toggleButton:last-child {
+    border-top-right-radius: 10px;
+    border-bottom-right-radius: 10px;
+    border-right: 3px solid var(--foreground);
+}
+
+.itemTitle {
+    font-size: 2rem;
+}
+
+.grantsText {
+    font-style: italic;
+    color: var(--theme-gray);
+    font-size: 0.75rem;
+    margin-top: 8px;
+    margin-bottom: 5px;
+}
+
+.grantsConstraintContainer {
+    border: 1px solid var(--foreground);
+    padding: 7px 10px 10px 10px;
+    border-radius: 10px;
+    border-left: 3px solid var(--foreground);
+}
+
+.appOuterContainer hr {
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+.scavengerHuntItemContainer {
+    border: 1px solid var(--foreground);
+    padding: 10px;
+    border-radius: 10px;
 }

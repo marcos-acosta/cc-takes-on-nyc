@@ -114,6 +114,7 @@ export default function TeamPage(props: TeamPageProps) {
               onClick={() => setSelectedPage(Page.ITEMS)}
               className={combineClasses(
                 styles.button,
+                styles.toggleButton,
                 isOnItemsPage && styles.selected
               )}
             >
@@ -123,6 +124,7 @@ export default function TeamPage(props: TeamPageProps) {
               onClick={() => setSelectedPage(Page.TEAMS)}
               className={combineClasses(
                 styles.button,
+                styles.toggleButton,
                 !isOnItemsPage && styles.selected
               )}
             >
@@ -130,7 +132,7 @@ export default function TeamPage(props: TeamPageProps) {
             </button>
           </div>
           {selectedPage === Page.ITEMS ? (
-            <>
+            <div className={styles.usPageContainer}>
               <div className={styles.ourConstraintsContainer}>
                 <div
                   className={combineClasses(
@@ -157,22 +159,35 @@ export default function TeamPage(props: TeamPageProps) {
                 </div>
               </div>
               <div className={styles.itemsContainer}>
-                {SCAVENGER_HUNT_ITEMS.map((item) => (
-                  <ScavengerHuntItemInfo
-                    item={item}
-                    key={item.itemId}
-                    teamsData={teamsData}
-                    foundConstraints={constraintsFoundByThisTeam}
-                    find={(constraintId) => {
-                      setCastingConstraintId(constraintId);
-                    }}
-                    castingConstraintId={castingConstraintId}
-                    thisTeamId={thisTeamData.teamId}
-                    castConstraint={applyConstraint}
-                  />
-                ))}
+                <div
+                  className={combineClasses(
+                    styles.constraintsHeader,
+                    TANKER.className
+                  )}
+                >
+                  Items to find
+                </div>
+                <div className={styles.scavengerHuntItemListContainer}>
+                  {SCAVENGER_HUNT_ITEMS.map((item, index) => (
+                    <>
+                      <ScavengerHuntItemInfo
+                        item={item}
+                        key={item.itemId}
+                        teamsData={teamsData}
+                        foundConstraints={constraintsFoundByThisTeam}
+                        find={(constraintId) => {
+                          setCastingConstraintId(constraintId);
+                        }}
+                        castingConstraintId={castingConstraintId}
+                        thisTeamId={thisTeamData.teamId}
+                        castConstraint={applyConstraint}
+                      />
+                      {/* {index < SCAVENGER_HUNT_ITEMS.length - 1 && <hr />} */}
+                    </>
+                  ))}
+                </div>
               </div>
-            </>
+            </div>
           ) : (
             <>
               {teamsData

@@ -46,22 +46,30 @@ export default function ScavengerHuntItemInfo(
 
   return (
     haveAllData && (
-      <div className={styles.itemContainer}>
-        <div className={styles.numLeft}>
-          {props.item.count - numberOfTeamsWithThisConstraint} left
+      <div className={styles.scavengerHuntItemContainer}>
+        <div className={styles.itemHeader}>
+          <div className={styles.numLeft}>
+            {props.item.count - numberOfTeamsWithThisConstraint} left
+          </div>
+          <button
+            className={styles.button}
+            onClick={() => props.find(constraintData.constraintId)}
+            disabled={alreadyFound || isCasting}
+          >
+            {alreadyFound
+              ? "Already found"
+              : isCasting
+              ? "Casting..."
+              : "Found it!"}
+          </button>
         </div>
-        <button
-          onClick={() => props.find(constraintData.constraintId)}
-          disabled={alreadyFound || isCasting}
-        >
-          {alreadyFound
-            ? "Already found"
-            : isCasting
-            ? "Casting..."
-            : "Found it!"}
-        </button>
-        <ItemInfo item={itemData} />
-        <ConstraintInfo constraint={constraintData} />
+        <ItemInfo item={itemData} found={alreadyFound} />
+        <div className={styles.grantsContainer}>
+          <div className={styles.grantsText}>Grants ability to cast:</div>
+          <div className={styles.grantsConstraintContainer}>
+            <ConstraintInfo constraint={constraintData} />
+          </div>
+        </div>
       </div>
     )
   );
