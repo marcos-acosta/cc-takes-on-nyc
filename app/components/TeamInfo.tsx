@@ -1,4 +1,6 @@
+import { TANKER } from "../fonts";
 import { Team } from "../interfaces";
+import { combineClasses } from "../util";
 import styles from "./../page.module.css";
 import PlacedConstraints from "./PlacedConstraints";
 
@@ -11,16 +13,19 @@ interface TeamInfoProps {
 export default function TeamInfo(props: TeamInfoProps) {
   return (
     <div className={styles.teamInfoContainer}>
-      <div className={styles.teamName}>{props.team.teamName}</div>
-      <div className={styles.teamMembersContainer}>
-        {props.team.memberNames.join(", ")}
+      <div className={combineClasses(styles.teamInfoName, TANKER.className)}>
+        {props.team.teamName}
       </div>
-      {props.children}
+      <div className={styles.teamInfoMembersContainer}>
+        {props.team.memberNames.join(" & ")}
+      </div>
+      <div className={styles.teamChildrenContainer}>{props.children}</div>
       <div className={styles.constraintsContainer}>
         <div className={styles.numConstraintsContainer}>
-          {props.team.constraints.length} constraints
+          {props.team.constraints.length} constraint
+          {props.team.constraints.length === 1 ? "" : "s"}
         </div>
-        <div className={styles.constraintsListContainer}>
+        <div className={styles.inflictedConstraintsListContainer}>
           {props.team.constraints.map((constraint) => (
             <PlacedConstraints
               teams={props.allTeams}

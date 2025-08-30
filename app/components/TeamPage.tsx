@@ -19,13 +19,15 @@ import {
   sortScavengerHuntItems,
 } from "../util";
 import ScavengerHuntItemInfo from "./ScavengerHuntItemInfo";
-import { SCAVENGER_HUNT_ITEMS } from "../config";
+import { CONSTRAINTS, SCAVENGER_HUNT_ITEMS } from "../config";
 import { useState } from "react";
 import TeamInfo from "./TeamInfo";
 import { TANKER } from "../fonts";
 
 interface TeamPageProps {
   teamId: string;
+  setCastingConstraintId: (constraintId: string | null) => void;
+  castingConstraintId: string | null;
 }
 
 const enum Page {
@@ -43,9 +45,6 @@ export default function TeamPage(props: TeamPageProps) {
     collection(db, "teams")
   );
   const [selectedPage, setSelectedPage] = useState(Page.ITEMS);
-  const [castingConstraintId, setCastingConstraintId] = useState<string | null>(
-    null
-  );
 
   const teamsData: Team[] | undefined =
     teamsValue && teamsValue.docs.map(convertDbTeamDocToClientTeam);
@@ -60,6 +59,10 @@ export default function TeamPage(props: TeamPageProps) {
 
   const missingData =
     !teamsData || !thisTeamData || !constraintsFoundByThisTeam;
+
+  const chosenConstraintData =
+    props.castingConstraintId &&
+    CONSTRAINTS[props.castingConstraintId as ConstraintId];
 
   const applyConstraint = async (
     onTeamId: string,
@@ -82,7 +85,7 @@ export default function TeamPage(props: TeamPageProps) {
     await updateDoc(docRef, {
       constraints: arrayUnion(placedConstraintForDb),
     }).then(() => {
-      setCastingConstraintId(null);
+      props.setCastingConstraintId(null);
     });
   };
 
@@ -173,28 +176,25 @@ export default function TeamPage(props: TeamPageProps) {
                   Items to find
                 </div>
                 <div className={styles.scavengerHuntItemListContainer}>
-                  {sortedScavengerHuntItems.map((item, index) => (
-                    <>
-                      <ScavengerHuntItemInfo
-                        item={item}
-                        key={item.itemId}
-                        teamsData={teamsData}
-                        foundConstraints={constraintsFoundByThisTeam}
-                        find={(constraintId) => {
-                          setCastingConstraintId(constraintId);
-                        }}
-                        castingConstraintId={castingConstraintId}
-                        thisTeamId={thisTeamData.teamId}
-                        castConstraint={applyConstraint}
-                      />
-                      {/* {index < SCAVENGER_HUNT_ITEMS.length - 1 && <hr />} */}
-                    </>
+                  {sortedScavengerHuntItems.map((item) => (
+                    <ScavengerHuntItemInfo
+                      item={item}
+                      key={item.itemId}
+                      teamsData={teamsData}
+                      foundConstraints={constraintsFoundByThisTeam}
+                      find={(constraintId) => {
+                        props.setCastingConstraintId(constraintId);
+                      }}
+                      castingConstraintId={props.castingConstraintId}
+                      thisTeamId={thisTeamData.teamId}
+                      castConstraint={applyConstraint}
+                    />
                   ))}
                 </div>
               </div>
             </div>
           ) : (
-            <>
+            <div className={styles.allTeamsList}>
               {teamsData
                 .filter((team) => team.teamId !== thisTeamData.teamId)
                 .map((team) => (
@@ -204,42 +204,70 @@ export default function TeamPage(props: TeamPageProps) {
                     key={team.teamId}
                   />
                 ))}
-            </>
+            </div>
           )}
         </>
       )}
-      {castingConstraintId && (
+      {props.castingConstraintId && chosenConstraintData && (
         <div className={styles.castConstraintOverlay}>
-          <button onClick={() => setCastingConstraintId(null)}>cancel</button>
-          {!missingData &&
-            teamsData
-              .filter((team) => team.teamId !== thisTeamData.teamId)
-              .map((team) => {
-                const [canApply, reason] = canApplyConstraint(
-                  team,
-                  castingConstraintId as ConstraintId
-                );
-                return (
-                  <TeamInfo team={team} allTeams={teamsData} key={team.teamId}>
-                    {!canApply && (
-                      <div className={styles.cantApplyReason}>
-                        Can&apos;t cast this constraint because {reason}
-                      </div>
-                    )}
-                    <button
-                      disabled={!canApply}
-                      onClick={() =>
-                        applyConstraint(
-                          team.teamId,
-                          castingConstraintId as ConstraintId
-                        )
-                      }
-                    >
-                      Cast on this team!
-                    </button>
-                  </TeamInfo>
-                );
-              })}
+          <div className={styles.overlayInnerContainer}>
+            <div className={styles.cancelButtonContainer}>
+              <button
+                onClick={() => props.setCastingConstraintId(null)}
+                className={combineClasses(styles.button, styles.cancelButton)}
+              >
+                cancel
+              </button>
+            </div>
+            <div
+              className={combineClasses(
+                styles.chooseTeamHeader,
+                TANKER.className
+              )}
+            >
+              Choose a team
+            </div>
+            <div className={styles.toInflictText}>
+              to cast &quot;{chosenConstraintData.title.toLocaleLowerCase()}
+              &quot; on:
+            </div>
+            <div className={styles.teamToInflictListContainer}>
+              {!missingData &&
+                teamsData
+                  .filter((team) => team.teamId !== thisTeamData.teamId)
+                  .map((team) => {
+                    const [canApply, reason] = canApplyConstraint(
+                      team,
+                      props.castingConstraintId as ConstraintId
+                    );
+                    return (
+                      <TeamInfo
+                        team={team}
+                        allTeams={teamsData}
+                        key={team.teamId}
+                      >
+                        {!canApply && (
+                          <div className={styles.cantApplyReason}>
+                            Can&apos;t cast this constraint because {reason}
+                          </div>
+                        )}
+                        <button
+                          disabled={!canApply}
+                          className={styles.button}
+                          onClick={() =>
+                            applyConstraint(
+                              team.teamId,
+                              props.castingConstraintId as ConstraintId
+                            )
+                          }
+                        >
+                          Cast on this team!
+                        </button>
+                      </TeamInfo>
+                    );
+                  })}
+            </div>
+          </div>
         </div>
       )}
     </div>
