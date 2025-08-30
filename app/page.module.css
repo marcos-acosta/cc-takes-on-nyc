@@ -212,9 +212,12 @@
     font-size: 0.75rem;
 }
 
-.itemTitle.foundItem {
+.itemTitle.foundItem, .itemTitle.foundItem.itemText {
     color: var(--theme-gray);
-    text-decoration: line-through;
+    text-decoration-line: line-through;
+    text-decoration-color: var(--theme-gray);
+    -webkit-text-decoration-line: line-through;
+    -webkit-text-decoration-color: var(--theme-gray);
 }
 
 .numLeft {
