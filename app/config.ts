@@ -6,7 +6,7 @@ import {
   ScavengerHuntItem,
 } from "./interfaces";
 
-const DEFAULT_initialNumber = 3;
+const DEFAULT_initialcount = 3;
 
 export const ITEMS: { [key in ItemId]: Item } = {
   [ItemId.LIVING_RAT]: {
@@ -64,21 +64,21 @@ export const SCAVENGER_HUNT_ITEMS: ScavengerHuntItem[] = [
   {
     itemId: ItemId.LIVING_RAT,
     constraintId: ConstraintId.NO_JAVASCRIPT,
-    initialNumber: DEFAULT_initialNumber,
+    count: DEFAULT_initialcount,
   },
   {
     itemId: ItemId.SCAVENGED_BIKE,
     constraintId: ConstraintId.NO_PYTHON,
-    initialNumber: DEFAULT_initialNumber,
+    count: DEFAULT_initialcount,
   },
   {
     itemId: ItemId.BIG_CHEF,
     constraintId: ConstraintId.NO_COLOR,
-    initialNumber: DEFAULT_initialNumber,
+    count: DEFAULT_initialcount,
   },
   {
     itemId: ItemId.CITIBIKE,
     constraintId: ConstraintId.UGLY_GRADIENT,
-    initialNumber: DEFAULT_initialNumber,
+    count: DEFAULT_initialcount,
   },
 ];

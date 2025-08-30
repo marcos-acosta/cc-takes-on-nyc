@@ -65,5 +65,5 @@ export interface Team {
 export interface ScavengerHuntItem {
   itemId: ItemId;
   constraintId: ConstraintId;
-  initialNumber: number;
+  count: number;
 }
