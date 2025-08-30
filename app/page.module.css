@@ -362,3 +362,15 @@
 .grayedOut {
     color: var(--theme-gray)
 }
+
+.itemText {
+    text-decoration: var(--theme-blue) 2px underline;
+}
+
+.constraintText {
+    text-decoration: var(--theme-red) 2px underline;
+}
+
+.extraText {
+    text-decoration: var(--theme-green) 2px underline;
+}

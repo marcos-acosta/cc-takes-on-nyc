@@ -159,6 +159,7 @@ export default function TeamPage(props: TeamPageProps) {
                 <div
                   className={combineClasses(
                     styles.constraintsHeader,
+                    styles.constraintText,
                     TANKER.className
                   )}
                 >
@@ -184,6 +185,7 @@ export default function TeamPage(props: TeamPageProps) {
                 <div
                   className={combineClasses(
                     styles.constraintsHeader,
+                    styles.extraText,
                     TANKER.className
                   )}
                 >
@@ -208,6 +210,7 @@ export default function TeamPage(props: TeamPageProps) {
                 <div
                   className={combineClasses(
                     styles.constraintsHeader,
+                    styles.itemText,
                     TANKER.className
                   )}
                 >

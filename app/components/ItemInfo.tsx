@@ -15,6 +15,7 @@ export default function ItemInfo(props: ItemInfoProps) {
         className={combineClasses(
           styles.itemTitle,
           TANKER.className,
+          styles.itemText,
           props.found && styles.foundItem
         )}
       >

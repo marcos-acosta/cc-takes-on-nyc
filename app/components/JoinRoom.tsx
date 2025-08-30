@@ -71,7 +71,13 @@ export default function JoinRoom() {
         </div>
         {addingTeamFailed && <Error message={"Failed to add team :/"} />}
         <div className={styles.sectionContainer}>
-          <div className={combineClasses(styles.formHeader, TANKER.className)}>
+          <div
+            className={combineClasses(
+              styles.formHeader,
+              TANKER.className,
+              styles.itemText
+            )}
+          >
             Create a team
           </div>
           <div className={styles.formContainer}>
@@ -102,7 +108,13 @@ export default function JoinRoom() {
           </div>
         </div>
         <div className={styles.sectionContainer}>
-          <div className={combineClasses(styles.formHeader, TANKER.className)}>
+          <div
+            className={combineClasses(
+              styles.formHeader,
+              TANKER.className,
+              styles.constraintText
+            )}
+          >
             Go to team room
           </div>
           <div className={styles.formContainer}>

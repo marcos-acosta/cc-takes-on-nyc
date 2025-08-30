@@ -5,6 +5,8 @@
   --mobile-font-size: 16px;
   --desktop-font-size: 16px;
   --theme-red: rgb(229, 70, 70);
+  --theme-blue: rgb(70, 105, 229);
+  --theme-green: rgb(70, 229, 136);
 }
 
 html,

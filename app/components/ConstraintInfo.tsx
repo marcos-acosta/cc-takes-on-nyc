@@ -10,7 +10,14 @@ interface ConstraintInfoProps {
 export default function ConstraintInfo(props: ConstraintInfoProps) {
   return (
     <div className={styles.constraintContainer}>
-      <div className={styles.constraintTitle}>{props.constraint.title}</div>
+      <div
+        className={combineClasses(
+          styles.constraintTitle,
+          props.constraint.isVeto ? styles.extraText : styles.constraintText
+        )}
+      >
+        {props.constraint.title}
+      </div>
       <div
         className={combineClasses(
           styles.constraintDescription,
