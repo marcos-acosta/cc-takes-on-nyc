@@ -8,13 +8,7 @@ import {
   updateDoc,
 } from "firebase/firestore";
 import { db } from "./../db";
-import {
-  ConstraintId,
-  Item,
-  PlacedConstraint,
-  ScavengerHuntItem,
-  Team,
-} from "../interfaces";
+import { ConstraintId, Item, PlacedConstraint, Team } from "../interfaces";
 import Error from "./Error";
 import Loading from "./Loading";
 import PlacedConstraints from "./PlacedConstraints";
@@ -25,9 +19,15 @@ import {
 import ScavengerHuntItemInfo from "./ScavengerHuntItemInfo";
 import { SCAVENGER_HUNT_ITEMS } from "../config";
 import { useState } from "react";
+import TeamInfo from "./TeamInfo";
 
 interface TeamPageProps {
   teamId: string;
+}
+
+const enum Page {
+  ITEMS,
+  TEAMS,
 }
 
 const keyFromPlacedConstraint = (placedConstraint: PlacedConstraint) =>
@@ -39,6 +39,7 @@ export default function TeamPage(props: TeamPageProps) {
   const [teamsValue, teamsLoading, teamsError] = useCollection(
     collection(db, "teams")
   );
+  const [selectedPage, setSelectedPage] = useState(Page.ITEMS);
   const [castingConstraintId, setCastingConstraintId] = useState<string | null>(
     null
   );
@@ -82,18 +83,24 @@ export default function TeamPage(props: TeamPageProps) {
     });
   };
 
+  const canApplyConstraint = (team: Team, constraintId: ConstraintId) => {
+    return [true, null];
+  };
+
   return (
     <div className={styles.teamPageOuterContainer}>
       <div className={styles.teamPageHeader}>
         Creative Coding Scavenger Hunt
       </div>
+      <button onClick={() => setSelectedPage(Page.ITEMS)}>See items</button>
+      <button onClick={() => setSelectedPage(Page.TEAMS)}>See teams</button>
       {teamsError ? (
         <Error message="Couldn't load data :/" />
       ) : teamsLoading ? (
         <Loading message="Loading..." />
       ) : missingData ? (
         <Error message="Something weird happened" />
-      ) : (
+      ) : selectedPage === Page.ITEMS ? (
         <>
           <div className={styles.teamName}>{thisTeamData.teamName}</div>
           <div className={styles.memberNames}>
@@ -132,6 +139,48 @@ export default function TeamPage(props: TeamPageProps) {
             ))}
           </div>
         </>
+      ) : (
+        <>
+          {teamsData
+            .filter((team) => team.teamId !== thisTeamData.teamId)
+            .map((team) => (
+              <TeamInfo team={team} allTeams={teamsData} key={team.teamId} />
+            ))}
+        </>
+      )}
+      {castingConstraintId && (
+        <div className={styles.castConstraintOverlay}>
+          <button onClick={() => setCastingConstraintId(null)}>cancel</button>
+          {!missingData &&
+            teamsData
+              .filter((team) => team.teamId !== thisTeamData.teamId)
+              .map((team) => {
+                const [canApply, reason] = canApplyConstraint(
+                  team,
+                  castingConstraintId as ConstraintId
+                );
+                return (
+                  <TeamInfo team={team} allTeams={teamsData} key={team.teamId}>
+                    {!canApply && (
+                      <div className={styles.cantApplyReason}>
+                        Can&apos;t cast this constraint because {reason}
+                      </div>
+                    )}
+                    <button
+                      disabled={!canApply}
+                      onClick={() =>
+                        applyConstraint(
+                          team.teamId,
+                          castingConstraintId as ConstraintId
+                        )
+                      }
+                    >
+                      Cast on this team!
+                    </button>
+                  </TeamInfo>
+                );
+              })}
+        </div>
       )}
     </div>
   );

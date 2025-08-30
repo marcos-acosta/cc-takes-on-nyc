@@ -24,8 +24,6 @@ interface ScavengerHuntItemInfoProps {
 export default function ScavengerHuntItemInfo(
   props: ScavengerHuntItemInfoProps
 ) {
-  const [selectedTeamId, setSelectedTeamId] = useState<string>("");
-
   const fullItemData = SCAVENGER_HUNT_ITEMS.find(
     (item) => item.itemId === props.item.itemId
   );
@@ -47,11 +45,6 @@ export default function ScavengerHuntItemInfo(
   const isCasting =
     haveAllData && props.castingConstraintId === constraintData.constraintId;
 
-  const cancelCastingSelection = () => {
-    props.find(null);
-    setSelectedTeamId("");
-  };
-
   return (
     haveAllData && (
       <div className={styles.itemContainer}>
@@ -68,34 +61,6 @@ export default function ScavengerHuntItemInfo(
             ? "Casting..."
             : "Found it!"}
         </button>
-        {isCasting && (
-          <div className={styles.castingDialog}>
-            Cast on whom?
-            <select onChange={(e) => setSelectedTeamId(e.target.value)}>
-              <option value=""></option>
-              {props.teamsData
-                .filter((team) => team.teamId !== props.thisTeamId)
-                .map((team) => (
-                  <option value={team.teamId} key={team.teamId}>
-                    {team.teamName} &#40;{team.memberNames.join(", ")}&#41;
-                  </option>
-                ))}
-            </select>
-            <button onClick={cancelCastingSelection}>Cancel</button>
-            <button
-              disabled={!selectedTeamId}
-              onClick={() =>
-                selectedTeamId.length &&
-                props.castConstraint(
-                  selectedTeamId,
-                  constraintData.constraintId
-                )
-              }
-            >
-              Cast it!
-            </button>
-          </div>
-        )}
         <ItemInfo item={itemData} />
         <ConstraintInfo constraint={constraintData} />
       </div>
