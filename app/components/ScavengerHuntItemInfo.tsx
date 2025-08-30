@@ -83,7 +83,7 @@ export default function ScavengerHuntItemInfo(
         </div>
         <ItemInfo item={itemData} found={alreadyFound} />
         <div className={styles.grantsContainer}>
-          <div className={styles.grantsText}>Grants ability to cast:</div>
+          <div className={styles.grantsText}>grants ability to cast:</div>
           <div className={styles.grantsConstraintContainer}>
             <ConstraintInfo constraint={constraintData} />
           </div>

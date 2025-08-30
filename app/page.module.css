@@ -13,6 +13,7 @@
 
 .appInnerContainer {
     width: 88%;
+    max-width: 600px;
 }
 
 .titleOuterContainer {
@@ -56,6 +57,12 @@
     font-size: 0.9rem;
     font-style: italic;
     margin-bottom: 5px;
+}
+
+.noTeams {
+    color: var(--theme-gray);
+    font-size: 0.9rem;
+    font-style: italic;
 }
 
 .appOuterContainer input {
@@ -139,6 +146,7 @@
     display: flex;
     align-items: center;
     flex-direction: column;
+    font-style: italic;
 }
 
 .loadingMessage {
@@ -148,6 +156,15 @@
 
 .messageContainer {
     margin-top: 50px;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
+
+.messageContainerNoTopMargin {
+    width: 100%;
+    display: flex;
+    justify-content: center;
 }
 
 .ourConstraintsContainer {

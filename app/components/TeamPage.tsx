@@ -112,9 +112,13 @@ export default function TeamPage(props: TeamPageProps) {
   return (
     <div className={styles.teamPageOuterContainer}>
       {teamsError ? (
-        <Error message="Couldn't load data :/" />
+        <div className={styles.messageContainer}>
+          <Error message="Couldn't load data :/" />
+        </div>
       ) : teamsLoading ? (
-        <Loading message="Loading..." />
+        <div className={styles.messageContainer}>
+          <Loading message="Loading..." />
+        </div>
       ) : missingData ? (
         <div className={styles.messageContainer}>
           <Error message="Something went wrong" />
@@ -172,7 +176,7 @@ export default function TeamPage(props: TeamPageProps) {
                     ))
                   ) : (
                     <div className={styles.noConstraints}>
-                      Your team has no constraints! &#40;yet...&#41;
+                      your team has no constraints! &#40;yet...&#41;
                     </div>
                   )}
                 </div>
@@ -197,7 +201,7 @@ export default function TeamPage(props: TeamPageProps) {
                     ))
                   ) : (
                     <div className={styles.noConstraints}>
-                      You haven&apos;t found any extras.
+                      you haven&apos;t found any extras.
                     </div>
                   )}
                 </div>

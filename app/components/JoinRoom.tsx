@@ -119,9 +119,15 @@ export default function JoinRoom() {
           </div>
           <div className={styles.formContainer}>
             {teamsError ? (
-              <Error message="Couldn't fetch the teams :/" />
+              <div className={styles.messageContainerNoTopMargin}>
+                <Error message="Couldn't fetch the teams :/" />
+              </div>
             ) : teamsLoading ? (
-              <Loading message="Loading teams..." />
+              <div className={styles.messageContainerNoTopMargin}>
+                <Loading message="Loading teams..." />
+              </div>
+            ) : teamsValue?.docs.length === 0 ? (
+              <div className={styles.noTeams}>No teams yet.</div>
             ) : (
               teamsValue?.docs.map(convertDbTeamDocToClientTeam).map((team) => (
                 <button
