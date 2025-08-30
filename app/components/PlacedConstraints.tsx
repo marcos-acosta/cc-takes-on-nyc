@@ -1,6 +1,7 @@
 import { CONSTRAINTS } from "../config";
 import { PlacedConstraint, Team } from "../interfaces";
 import styles from "./../page.module.css";
+import ConstraintInfo from "./ConstraintInfo";
 
 interface PlacedConstraintsProps {
   teams: Team[];
@@ -13,20 +14,17 @@ export default function PlacedConstraints(props: PlacedConstraintsProps) {
     (team) => team.teamId === props.constraint.placedByTeamId
   );
 
-  console.log(props.constraint.timestamp);
-
   return (
-    <div className={styles.constraint}>
-      <div className={styles.constraintTitle}>{constraintData?.title}</div>
-      <div className={styles.constraintDescription}>
-        {constraintData?.description}
+    constraintData && (
+      <div className={styles.constraint}>
+        <ConstraintInfo constraint={constraintData} />
+        {castByTeam && (
+          <div className={styles.placedByContainer}>
+            Cast by {castByTeam.teamName} at{" "}
+            {props.constraint.timestamp.toLocaleTimeString()}
+          </div>
+        )}
       </div>
-      {castByTeam && (
-        <div className={styles.placedByContainer}>
-          Cast by {castByTeam.teamName} at{" "}
-          {props.constraint.timestamp.toLocaleTimeString()}
-        </div>
-      )}
-    </div>
+    )
   );
 }
