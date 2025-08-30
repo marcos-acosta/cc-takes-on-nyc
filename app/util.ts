@@ -1,5 +1,10 @@
 import { DocumentData, QueryDocumentSnapshot } from "firebase/firestore";
-import { ConstraintId, Team } from "./interfaces";
+import {
+  ConstraintId,
+  PlacedConstraint,
+  ScavengerHuntItem,
+  Team,
+} from "./interfaces";
 
 export const combineClasses = (
   ...classes: (string | null | undefined | false)[]
@@ -49,3 +54,19 @@ export const formatTime = (time: Date) =>
     minute: "2-digit",
     hour12: true,
   });
+
+export const sortScavengerHuntItems = (
+  itemA: ScavengerHuntItem,
+  itemB: ScavengerHuntItem,
+  constraintsFoundByThisTeam?: PlacedConstraint[]
+) => {
+  if (!constraintsFoundByThisTeam) {
+    return 0;
+  }
+  const foundConstraintIds = constraintsFoundByThisTeam.map(
+    (c) => c.constraintId
+  );
+  const foundItemA = foundConstraintIds.includes(itemA.constraintId);
+  const foundItemB = foundConstraintIds.includes(itemB.constraintId);
+  return +foundItemA - +foundItemB;
+};

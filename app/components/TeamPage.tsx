@@ -16,6 +16,7 @@ import {
   combineClasses,
   constraintsSetByThisTeam,
   convertDbTeamDocToClientTeam,
+  sortScavengerHuntItems,
 } from "../util";
 import ScavengerHuntItemInfo from "./ScavengerHuntItemInfo";
 import { SCAVENGER_HUNT_ITEMS } from "../config";
@@ -90,6 +91,10 @@ export default function TeamPage(props: TeamPageProps) {
   };
 
   const isOnItemsPage = selectedPage === Page.ITEMS;
+
+  const sortedScavengerHuntItems = SCAVENGER_HUNT_ITEMS.sort((itemA, itemB) =>
+    sortScavengerHuntItems(itemA, itemB, constraintsFoundByThisTeam)
+  );
 
   return (
     <div className={styles.teamPageOuterContainer}>
@@ -168,7 +173,7 @@ export default function TeamPage(props: TeamPageProps) {
                   Items to find
                 </div>
                 <div className={styles.scavengerHuntItemListContainer}>
-                  {SCAVENGER_HUNT_ITEMS.map((item, index) => (
+                  {sortedScavengerHuntItems.map((item, index) => (
                     <>
                       <ScavengerHuntItemInfo
                         item={item}
