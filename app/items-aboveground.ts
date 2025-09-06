@@ -79,4 +79,9 @@ export const ABOVEGROUND_ITEMS: { [key in ItemId]: Item } = {
     title: "Pigeons!",
     description: "Take a photo with at least four pigeons visible.",
   },
+  [ItemId.ILLEGAL]: {
+    itemId: ItemId.ILLEGAL,
+    title: "Crime!",
+    description: "Find somebody breaking the law, no matter how minor.",
+  },
 };

@@ -98,6 +98,12 @@ export const CONSTRAINTS: { [key in ConstraintId]: Constraint } = {
     description: "Before hacking, you can remove one constraint.",
     isVeto: true,
   },
+  [ConstraintId.ILLEGAL_NUMBER]: {
+    constraintId: ConstraintId.ILLEGAL_NUMBER,
+    title: "It's probably fair use",
+    description: "Your work must infringe on some copyright (playfully).",
+    isVeto: true,
+  },
 };
 
 export const SCAVENGER_HUNT_ITEMS: ScavengerHuntItem[] = [
@@ -169,6 +175,11 @@ export const SCAVENGER_HUNT_ITEMS: ScavengerHuntItem[] = [
   {
     itemId: ItemId.PIZZA,
     constraintId: ConstraintId.STANDUP,
+    count: DEFAULT_initialcount,
+  },
+  {
+    itemId: ItemId.ILLEGAL,
+    constraintId: ConstraintId.ILLEGAL_NUMBER,
     count: DEFAULT_initialcount,
   },
   {

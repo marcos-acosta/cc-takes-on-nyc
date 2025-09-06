@@ -14,6 +14,7 @@ export const enum ItemId {
   PERFORMER = "PERFORMER",
   PIZZA = "PIZZA",
   PIGEONS = "PIGEONS",
+  ILLEGAL = "ILLEGAL",
 }
 
 export const enum ConstraintId {
@@ -32,6 +33,7 @@ export const enum ConstraintId {
   SMALL_CODE = "SMALL_CODE",
   STANDUP = "STANDUP",
   VETO = "VETO",
+  ILLEGAL_NUMBER = "ILLEGAL_NUMBER",
 }
 
 export interface Item {
