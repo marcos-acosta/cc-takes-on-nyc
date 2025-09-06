@@ -6,6 +6,7 @@ import styles from "./../page.module.css";
 interface ItemInfoProps {
   item: Item;
   found?: boolean;
+  depleted?: boolean;
 }
 
 export default function ItemInfo(props: ItemInfoProps) {
@@ -16,7 +17,7 @@ export default function ItemInfo(props: ItemInfoProps) {
           styles.itemTitle,
           TANKER.className,
           styles.itemText,
-          props.found && styles.foundItem
+          (props.found || props.depleted) && styles.foundItem
         )}
       >
         {props.item.title}

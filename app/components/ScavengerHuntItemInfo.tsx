@@ -59,6 +59,9 @@ export default function ScavengerHuntItemInfo(
     }
   };
 
+  const isDepleted =
+    (props.item.count || 0) - numberOfTeamsWithThisConstraint <= 0;
+
   return (
     haveAllData && (
       <div className={styles.scavengerHuntItemContainer}>
@@ -72,7 +75,7 @@ export default function ScavengerHuntItemInfo(
           <button
             className={styles.button}
             onClick={findItem}
-            disabled={alreadyFound || isCasting}
+            disabled={alreadyFound || isCasting || isDepleted}
           >
             {alreadyFound
               ? "Already found"
@@ -81,7 +84,7 @@ export default function ScavengerHuntItemInfo(
               : "Found it!"}
           </button>
         </div>
-        <ItemInfo item={itemData} found={alreadyFound} />
+        <ItemInfo item={itemData} found={alreadyFound} depleted={isDepleted} />
         <div className={styles.grantsContainer}>
           <div className={styles.grantsText}>grants ability to cast:</div>
           <div className={styles.grantsConstraintContainer}>
