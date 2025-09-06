@@ -177,4 +177,4 @@ export const SCAVENGER_HUNT_ITEMS: ScavengerHuntItem[] = [
   },
 ];
 
-export const MAX_NUM_CONSTRAINTS = 4;
+export const MAX_NUM_CONSTRAINTS = 5;
