@@ -104,6 +104,12 @@ export const CONSTRAINTS: { [key in ConstraintId]: Constraint } = {
     description: "Your work must infringe on some copyright (playfully).",
     isVeto: true,
   },
+  [ConstraintId.FRAME_RATE]: {
+    constraintId: ConstraintId.FRAME_RATE,
+    title: "Laggy",
+    description: "Your work cannot be faster than 5 fps.",
+    incompatibleWith: [ConstraintId.NO_MOTION],
+  },
 };
 
 export const SCAVENGER_HUNT_ITEMS: ScavengerHuntItem[] = [
@@ -180,6 +186,11 @@ export const SCAVENGER_HUNT_ITEMS: ScavengerHuntItem[] = [
   {
     itemId: ItemId.ILLEGAL,
     constraintId: ConstraintId.ILLEGAL_NUMBER,
+    count: DEFAULT_initialcount,
+  },
+  {
+    itemId: ItemId.MOSAIC,
+    constraintId: ConstraintId.FRAME_RATE,
     count: DEFAULT_initialcount,
   },
   {

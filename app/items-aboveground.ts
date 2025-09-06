@@ -84,4 +84,9 @@ export const ABOVEGROUND_ITEMS: { [key in ItemId]: Item } = {
     title: "Crime!",
     description: "Find somebody breaking the law, no matter how minor.",
   },
+  [ItemId.MOSAIC]: {
+    itemId: ItemId.MOSAIC,
+    title: "Mosaic",
+    description: "Find a mosaic (not words).",
+  },
 };
