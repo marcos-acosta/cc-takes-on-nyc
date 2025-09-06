@@ -102,7 +102,6 @@ export const CONSTRAINTS: { [key in ConstraintId]: Constraint } = {
     constraintId: ConstraintId.ILLEGAL_NUMBER,
     title: "It's probably fair use",
     description: "Your work must infringe on some copyright (playfully).",
-    isVeto: true,
   },
   [ConstraintId.FRAME_RATE]: {
     constraintId: ConstraintId.FRAME_RATE,
