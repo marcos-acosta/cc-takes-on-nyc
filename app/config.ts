@@ -5,11 +5,11 @@ import {
   ItemId,
   ScavengerHuntItem,
 } from "./interfaces";
-import { UNDERGROUND_ITEMS } from "./items-underground";
+import { ABOVEGROUND_ITEMS } from "./items-aboveground";
 
 const DEFAULT_initialcount = 3;
 
-export const ITEMS: { [key in ItemId]: Item } = UNDERGROUND_ITEMS;
+export const ITEMS: { [key in ItemId]: Item } = ABOVEGROUND_ITEMS;
 
 export const CONSTRAINTS: { [key in ConstraintId]: Constraint } = {
   [ConstraintId.NO_JAVASCRIPT]: {
